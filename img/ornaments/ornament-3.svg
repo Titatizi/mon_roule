@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 50" fill="none" stroke="#B89259" stroke-width="1.5" stroke-linecap="round">
+  <!-- Filete con floritura usado en la sección de Instagram -->
+  <path d="M20,25 C50,25 60,10 90,10 C110,10 115,20 105,25 C115,30 110,40 90,40 C60,40 50,25 20,25 Z"/>
+  <line x1="130" y1="25" x2="240" y2="25" stroke-opacity="0.6"/>
+  <circle cx="240" cy="25" r="2.5" fill="#B89259" stroke="none"/>
+</svg>

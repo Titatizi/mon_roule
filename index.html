@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Roule — Pastelería artesanal en CABA</title>
+  <meta name="description" content="Mon Roule, pastelería artesanal en CABA. Rolls de canela, budines y productos a pedido. Pedidos por Instagram.">
+
+  <!-- Si el navegador no tiene JavaScript activado, mostramos el contenido sin animar -->
+  <noscript>
+    <style>
+      .reveal,
+      .featured__step { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
+
+  <!-- Tipografías (Google Fonts): Cormorant Garamond para títulos, Lora para texto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       HERO
+       CAMBIAR el nombre o la frase principal: buscá los comentarios
+       "CAMBIAR" más abajo.
+       ============================================================ -->
+  <header class="hero" id="hero">
+    <img class="hero__ornament reveal" src="img/ornaments/ornament-1.svg" alt="" aria-hidden="true">
+
+    <div class="container hero__content">
+      <p class="hero__eyebrow reveal">Pastelería artesanal</p>
+      <h1 class="hero__title reveal">Mon Roule</h1>
+
+      <!-- CAMBIAR FRASE DEL HERO ACÁ -->
+      <p class="hero__subtitle reveal">Pastelería artesanal en CABA.</p>
+
+      <!-- CAMBIAR LINK DE INSTAGRAM: este href y todos los demás del sitio
+           se actualizan también automáticamente desde js/script.js (INSTAGRAM_URL) -->
+      <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener"
+         class="btn btn--primary reveal js-instagram-link">
+        Pedir por Instagram
+      </a>
+    </div>
+
+    <span class="hero__scroll-cue" aria-hidden="true"></span>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         MARCA — breve presentación de la pastelería
+         ============================================================ -->
+    <section class="section" id="marca">
+      <div class="container">
+        <img class="ornament reveal" src="img/ornaments/ornament-2.svg" alt="" aria-hidden="true">
+        <h2 class="section-title reveal">Hecho a mano, con tiempo</h2>
+
+        <!-- CAMBIAR TEXTO DE MARCA ACÁ -->
+        <p class="brand__text reveal">
+          Mon Roule nació en una cocina de CABA, entre horneadas de prueba y mucha paciencia.
+          Somos una pareja joven que decidió convertir esa pasión en un emprendimiento propio.
+        </p>
+        <p class="brand__text reveal">
+          Cada producto se hace en tandas chicas, a mano, con ingredientes simples y tiempo de sobra.
+          Nada sale apurado: preferimos que cada porción se sienta cuidada, delicada y artesanal.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRODUCTO DESTACADO — Rolls de canela
+         ============================================================ -->
+    <section class="section section--paper featured" id="destacado">
+      <div class="container">
+        <p class="section-eyebrow reveal reveal--grand">Nuestro clásico</p>
+        <h2 class="section-title reveal reveal--grand">Rolls de canela</h2>
+        <p class="section-subtitle reveal reveal--grand">De la masa a la mesa, paso a paso.</p>
+
+        <!-- Experiencia inmersiva: imagen grande (sticky en desktop) +
+             pasos grandes a la derecha. El atributo "data-active-step"
+             lo actualiza js/script.js para saber qué paso está activo. -->
+        <div class="featured__experience">
+
+          <div class="featured__visual" data-active-step="1">
+            <div class="featured__visual-image">
+              <img src="img/placeholders/roll-canela.svg" alt="Roll de canela recién horneado" loading="lazy">
+            </div>
+          </div>
+
+          <div class="featured__steps">
+            <!-- Cada "data-step" debe coincidir con el data-active-step de arriba -->
+            <article class="featured__step" data-step="1">
+              <span class="featured__step-number">01</span>
+              <h3 class="featured__step-label">Masa</h3>
+              <p class="featured__step-text">Amasamos a mano hasta lograr una textura suave y elástica.</p>
+            </article>
+
+            <article class="featured__step" data-step="2">
+              <span class="featured__step-number">02</span>
+              <h3 class="featured__step-label">Canela</h3>
+              <p class="featured__step-text">Cubrimos la masa con manteca y una mezcla generosa de canela.</p>
+            </article>
+
+            <article class="featured__step" data-step="3">
+              <span class="featured__step-number">03</span>
+              <h3 class="featured__step-label">Horneado</h3>
+              <p class="featured__step-text">Horneamos hasta lograr ese dorado parejo y el aroma que llena la casa.</p>
+            </article>
+
+            <article class="featured__step" data-step="4">
+              <span class="featured__step-number">04</span>
+              <h3 class="featured__step-label">Glaseado</h3>
+              <p class="featured__step-text">Terminamos con un glaseado suave, todavía tibios.</p>
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CATÁLOGO ACTUAL
+         Las tarjetas se generan automáticamente desde js/script.js
+         (mirá el array "productos" para cambiar textos o precios).
+         ============================================================ -->
+    <section class="section" id="catalogo">
+      <div class="container">
+        <h2 class="section-title reveal">Nuestros productos</h2>
+        <p class="section-subtitle reveal">Disponibles para pedir esta semana.</p>
+
+        <!-- Este contenedor lo llena js/script.js -->
+        <div class="products-grid" id="catalogo-actual"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         A PEDIDO
+         También se generan desde js/script.js
+         ============================================================ -->
+    <section class="section section--paper" id="a-pedido">
+      <div class="container">
+        <h2 class="section-title reveal">A pedido</h2>
+        <p class="section-subtitle reveal">Para ocasiones especiales, coordinando con anticipación.</p>
+
+        <!-- Este contenedor lo llena js/script.js -->
+        <div class="products-grid" id="catalogo-pedido"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CÓMO PEDIR
+         ============================================================ -->
+    <section class="section" id="como-pedir">
+      <div class="container">
+        <h2 class="section-title reveal">Cómo pedir</h2>
+
+        <ol class="steps-list">
+          <li class="step reveal">
+            <span class="step__number">1</span>
+            <p class="step__text">Escribinos por Instagram contándonos qué te gustaría pedir.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__number">2</span>
+            <p class="step__text">Coordinamos el producto, la cantidad y la fecha.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__number">3</span>
+            <p class="step__text">Confirmamos disponibilidad y cerramos el pedido.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__number">4</span>
+            <p class="step__text">Coordinamos retiro o delivery en CABA (con cargo adicional a coordinar).</p>
+          </li>
+        </ol>
+
+        <p class="como-pedir__nota reveal">
+          Idealmente pedí con 48 horas de anticipación. En algunos casos podemos coordinar
+          con 24 horas, según disponibilidad.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         INSTAGRAM
+         ============================================================ -->
+    <section class="section instagram-cta" id="instagram">
+      <div class="container">
+        <img class="ornament reveal" src="img/ornaments/ornament-3.svg" alt="" aria-hidden="true">
+        <h2 class="section-title reveal">Seguinos en Instagram</h2>
+        <p class="section-subtitle reveal">Ahí compartimos nuestras novedades y recibimos los pedidos.</p>
+
+        <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener"
+           class="btn btn--primary reveal js-instagram-link">
+          @mon_roule
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PREGUNTAS FRECUENTES
+         Para agregar una pregunta, copiá un bloque ".faq-item" y
+         cambiá la pregunta y la respuesta.
+         ============================================================ -->
+    <section class="section faq" id="faq">
+      <div class="container">
+        <h2 class="section-title reveal">Preguntas frecuentes</h2>
+
+        <div class="faq-list">
+          <div class="faq-item reveal">
+            <button class="faq-item__question" aria-expanded="false">
+              ¿Con cuánto tiempo tengo que pedir?
+              <span class="faq-item__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-item__answer">
+              <p>Idealmente con 48 horas de anticipación. En algunos casos podemos coordinar pedidos con 24 horas, según disponibilidad.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-item__question" aria-expanded="false">
+              ¿Hacen delivery?
+              <span class="faq-item__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-item__answer">
+              <p>Sí, hacemos delivery propio en CABA con un cargo adicional a coordinar. También podés coordinar el retiro.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-item__question" aria-expanded="false">
+              ¿Dónde venden?
+              <span class="faq-item__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-item__answer">
+              <p>Por ahora vendemos a través de Instagram. Escribinos a @mon_roule para hacer tu pedido.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-item__question" aria-expanded="false">
+              ¿Puedo pedir tortas personalizadas?
+              <span class="faq-item__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-item__answer">
+              <p>Sí, podemos coordinar productos a pedido como cheesecake, lemon pie, crumble de manzana o cookies. Escribinos para charlar los detalles.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-item__question" aria-expanded="false">
+              ¿Cómo consulto disponibilidad?
+              <span class="faq-item__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-item__answer">
+              <p>La forma más rápida es escribirnos por Instagram contándonos qué día necesitás tu pedido.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container footer__content">
+      <p class="footer__brand">Mon Roule</p>
+
+      <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener"
+         class="footer__instagram js-instagram-link">
+        @mon_roule
+      </a>
+
+      <p class="footer__location">CABA, Argentina</p>
+
+      <!-- CAMBIAR FRASE DE CIERRE DEL FOOTER ACÁ -->
+      <p class="footer__tagline">Pastelería artesanal, hecha a mano y con cariño.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Placeholder ilustrado de crumble de manzana">
+  <defs>
+    <linearGradient id="bgCrumble" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF5EC"/>
+      <stop offset="100%" stop-color="#EFE3D2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bgCrumble)"/>
+  <rect x="16" y="16" width="368" height="468" rx="16" fill="none" stroke="#B89259" stroke-width="2" stroke-opacity="0.6"/>
+  <!-- Silueta de manzana con hoja y cabito -->
+  <path d="M200,200 C170,195 150,215 152,245 C154,275 175,300 200,300 C225,300 246,275 248,245 C250,215 230,195 200,200 Z"
+        fill="none" stroke="#5C3A22" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M200,200 C198,188 200,178 196,170" fill="none" stroke="#5C3A22" stroke-width="4" stroke-linecap="round"/>
+  <path d="M200,180 C210,170 224,172 228,182 C220,186 208,188 200,180 Z" fill="#B89259" stroke="none"/>
+</svg>

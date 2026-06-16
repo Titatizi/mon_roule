@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Placeholder ilustrado de budín de banana">
+  <defs>
+    <linearGradient id="bgBudinBanana" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF5EC"/>
+      <stop offset="100%" stop-color="#EFE3D2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bgBudinBanana)"/>
+  <rect x="16" y="16" width="368" height="468" rx="16" fill="none" stroke="#B89259" stroke-width="2" stroke-opacity="0.6"/>
+  <!-- Silueta de budín (molde tipo pan) con rodajas de banana arriba -->
+  <path d="M140,300 L140,260 C140,230 170,210 200,210 C230,210 260,230 260,260 L260,300 Z"
+        fill="none" stroke="#5C3A22" stroke-width="5" stroke-linejoin="round"/>
+  <line x1="140" y1="300" x2="260" y2="300" stroke="#5C3A22" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="175" cy="240" rx="14" ry="8" fill="#B89259"/>
+  <ellipse cx="200" cy="232" rx="14" ry="8" fill="#B89259"/>
+  <ellipse cx="225" cy="240" rx="14" ry="8" fill="#B89259"/>
+</svg>

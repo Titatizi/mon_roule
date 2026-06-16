@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Placeholder ilustrado de budín de zanahoria">
+  <defs>
+    <linearGradient id="bgBudinZanahoria" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF5EC"/>
+      <stop offset="100%" stop-color="#EFE3D2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bgBudinZanahoria)"/>
+  <rect x="16" y="16" width="368" height="468" rx="16" fill="none" stroke="#B89259" stroke-width="2" stroke-opacity="0.6"/>
+  <!-- Silueta simple de zanahoria con hojas -->
+  <path d="M200,200 C215,200 225,215 222,240 L210,310 C208,320 196,320 194,310 L182,240 C179,215 185,200 200,200 Z"
+        fill="none" stroke="#5C3A22" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M195,200 C190,185 178,180 170,182" fill="none" stroke="#5C3A22" stroke-width="4" stroke-linecap="round"/>
+  <path d="M200,198 C200,182 208,172 218,172" fill="none" stroke="#5C3A22" stroke-width="4" stroke-linecap="round"/>
+  <path d="M205,200 C212,188 224,186 232,190" fill="none" stroke="#5C3A22" stroke-width="4" stroke-linecap="round"/>
+</svg>

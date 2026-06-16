@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Placeholder ilustrado de cheesecake">
+  <defs>
+    <linearGradient id="bgCheesecake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF5EC"/>
+      <stop offset="100%" stop-color="#EFE3D2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bgCheesecake)"/>
+  <rect x="16" y="16" width="368" height="468" rx="16" fill="none" stroke="#B89259" stroke-width="2" stroke-opacity="0.6"/>
+  <!-- Porción triangular con cobertura ondulada -->
+  <path d="M140,320 L260,320 L200,180 Z" fill="none" stroke="#5C3A22" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M150,300 Q175,288 200,300 Q225,312 250,300" fill="none" stroke="#B89259" stroke-width="4" stroke-linecap="round"/>
+</svg>

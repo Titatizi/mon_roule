@@ -1,0 +1,728 @@
+/* =================================================================
+   MON ROULE — style.css
+   Todo el CSS del sitio vive en este único archivo, organizado en
+   bloques. Usá Ctrl+F y buscá el título del bloque (en mayúsculas)
+   para moverte rápido.
+   ================================================================= */
+
+
+/* =================================================================
+   1) VARIABLES
+   Acá viven los colores, tipografías y espaciados de toda la web.
+   Si querés cambiar un color en TODO el sitio, lo cambiás una sola
+   vez aquí.
+   ================================================================= */
+:root {
+  /* Colores */
+  --color-cream: #FAF5EC;       /* fondo principal, marfil cálido */
+  --color-paper: #EFE3D2;       /* fondo secundario, papel antiguo */
+  --color-carbon: #241F1A;      /* texto principal, negro carbón */
+  --color-cacao: #5C3A22;       /* texto secundario, marrón cálido */
+  --color-gold: #B89259;        /* acento, dorado apagado */
+  --color-gold-dark: #8C6B3F;   /* acento en hover, dorado oscuro */
+  --color-wine: #7A3B36;        /* detalle puntual (badge "a pedido") */
+
+  /* Tipografías */
+  --font-display: 'Cormorant Garamond', Georgia, serif; /* títulos */
+  --font-body: 'Lora', Georgia, serif;                  /* texto */
+
+  /* Espaciados (escala simple) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+
+  /* Otros */
+  --radius: 14px;
+  --container-width: 1100px;
+}
+
+
+/* =================================================================
+   2) RESET BÁSICO
+   Quita los márgenes/estilos por defecto del navegador para
+   empezar desde una base prolija.
+   ================================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* =================================================================
+   3) BASE — tipografía y fondo general
+   ================================================================= */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-cream);
+  color: var(--color-carbon);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+/* Mejora la visibilidad del foco al navegar con teclado */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-gold-dark);
+  outline-offset: 3px;
+}
+
+
+/* =================================================================
+   4) UTILIDADES — contenedor, secciones, títulos, ornamentos
+   ================================================================= */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.section {
+  padding: var(--space-xl) 0;
+  text-align: center;
+}
+
+/* Alterna el fondo de algunas secciones para dar ritmo visual */
+.section--paper {
+  background-color: var(--color-paper);
+}
+
+.section-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.8rem;
+  color: var(--color-gold-dark);
+  margin-bottom: var(--space-xs);
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin-bottom: var(--space-xs);
+}
+
+.section-subtitle {
+  font-style: italic;
+  color: var(--color-cacao);
+  max-width: 540px;
+  margin: 0 auto var(--space-lg);
+}
+
+/* Filete/floritura decorativa, se usa en varias secciones */
+.ornament {
+  display: block;
+  width: 160px;
+  height: auto;
+  margin: 0 auto var(--space-md);
+}
+
+
+/* =================================================================
+   5) BOTONES
+   ================================================================= */
+.btn {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+}
+
+.btn--primary {
+  background-color: var(--color-carbon);
+  color: var(--color-cream);
+  border: 1px solid var(--color-carbon);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-gold-dark);
+  border-color: var(--color-gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(36, 31, 26, 0.18);
+}
+
+
+/* =================================================================
+   6) ANIMACIÓN DE APARICIÓN AL HACER SCROLL ("reveal")
+   La clase ".reveal" la tienen muchos elementos en el HTML. Cuando
+   js/script.js detecta que entraron en pantalla, les agrega
+   ".is-visible" y ahí la transición de CSS los hace aparecer.
+   ================================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variante más cinematográfica de "reveal": además de aparecer, se
+   acerca levemente (scale) y tarda un poco más. Se usa junto con
+   ".reveal" (no en vez de) en los elementos que queremos que se
+   sientan más protagonistas, como el bloque de Rolls de canela. */
+.reveal--grand {
+  transform: translateY(36px) scale(0.96);
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal--grand.is-visible {
+  transform: translateY(0) scale(1);
+}
+
+/* Respeta a las personas que eligieron "reducir movimiento" en su
+   sistema: sacamos animaciones y transiciones largas */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* =================================================================
+   7) HERO
+   ================================================================= */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-lg) var(--space-md);
+  background: linear-gradient(180deg, var(--color-cream), var(--color-paper));
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__ornament {
+  width: 220px;
+  margin-bottom: var(--space-md);
+}
+
+.hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  color: var(--color-gold-dark);
+  margin-bottom: var(--space-xs);
+}
+
+.hero__title {
+  font-size: clamp(3rem, 10vw, 6rem);
+  margin-bottom: var(--space-xs);
+}
+
+.hero__subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-style: italic;
+  color: var(--color-cacao);
+  margin-bottom: var(--space-md);
+}
+
+/* Pequeña línea animada que invita a seguir bajando */
+.hero__scroll-cue {
+  display: block;
+  width: 1px;
+  height: 50px;
+  background: var(--color-gold);
+  margin-top: var(--space-lg);
+  opacity: 0.5;
+  animation: latidoSuave 2.4s ease-in-out infinite;
+}
+
+@keyframes latidoSuave {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.6; }
+}
+
+
+/* =================================================================
+   8) MARCA
+   ================================================================= */
+.brand__text {
+  max-width: 620px;
+  margin: 0 auto var(--space-sm);
+  color: var(--color-cacao);
+}
+
+
+/* =================================================================
+   9) PRODUCTO DESTACADO (rolls de canela)
+   ================================================================= */
+
+/* Un poco más de aire y un brillo dorado muy sutil detrás del título,
+   para que esta sección se sienta más protagonista que el resto.
+   IMPORTANTE: nada de "overflow" acá (hidden/auto/scroll) — rompe el
+   position:sticky de .featured__visual, que es descendiente de esta
+   sección. Por eso el brillo de abajo arranca en top:0 y no más
+   arriba: así no necesita recortarse con overflow para verse bien. */
+.featured {
+  position: relative;
+  padding: calc(var(--space-xl) + var(--space-md)) 0;
+}
+
+.featured::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(184, 146, 89, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.featured .section-title {
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+}
+
+/* ---- Layout de dos columnas: imagen sticky + pasos ---- */
+.featured__experience {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start; /* clave para que la columna de la imagen no se estire y pueda quedar sticky */
+  gap: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+/* Columna izquierda: se "pega" mientras se hace scroll por los pasos.
+   La altura para que esto funcione la da la columna derecha (más alta). */
+.featured__visual {
+  position: sticky;
+  top: 12vh;
+}
+
+.featured__visual-image {
+  max-width: 420px;
+  margin: 0 auto;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background-color: var(--color-cream);
+  box-shadow: 0 30px 60px rgba(36, 31, 26, 0.16);
+  transition: box-shadow 0.8s ease;
+}
+
+.featured__visual-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;
+}
+
+/* Cada paso "activo" cambia un poco la imagen: escala y brillo van
+   creciendo a medida que avanza el proceso (masa -> ... -> glaseado).
+   Esto lo controla js/script.js cambiando data-active-step. */
+.featured__visual[data-active-step="2"] .featured__visual-image img {
+  transform: scale(1.03);
+  filter: saturate(1.08);
+}
+
+.featured__visual[data-active-step="3"] .featured__visual-image img {
+  transform: scale(1.05);
+  filter: brightness(1.05) saturate(1.12);
+}
+
+.featured__visual[data-active-step="4"] .featured__visual-image img {
+  transform: scale(1.08);
+  filter: brightness(1.08) saturate(1.16);
+}
+
+.featured__visual[data-active-step="3"] .featured__visual-image,
+.featured__visual[data-active-step="4"] .featured__visual-image {
+  box-shadow: 0 36px 70px rgba(184, 146, 89, 0.3);
+}
+
+/* Columna derecha: pasos grandes, con mucho aire entre ellos */
+.featured__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  text-align: left;
+}
+
+/* Estado por defecto: atenuado, esperando a entrar en foco */
+.featured__step {
+  padding-left: var(--space-md);
+  border-left: 3px solid transparent;
+  opacity: 0.4;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.7s ease;
+}
+
+/* js/script.js agrega esta clase cuando el paso pasa por el centro
+   de la pantalla */
+.featured__step.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  border-left-color: var(--color-gold);
+}
+
+.featured__step-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-dark);
+  margin-bottom: 0.4rem;
+}
+
+.featured__step-label {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 0.5rem;
+}
+
+.featured__step-text {
+  font-size: 1rem;
+  color: var(--color-cacao);
+  max-width: 420px;
+}
+
+
+/* =================================================================
+   10) TARJETA DE PRODUCTO (reutilizable)
+   La usan tanto "Nuestros productos" como "A pedido". El HTML de
+   cada tarjeta lo genera js/script.js a partir del array
+   "productos" — no hace falta escribir tarjetas a mano.
+   ================================================================= */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  text-align: left;
+}
+
+.product-card {
+  background-color: var(--color-cream);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover {
+  transform: translateY(-10px) scale(1.015);
+  box-shadow: 0 24px 40px rgba(36, 31, 26, 0.16), 0 6px 16px rgba(184, 146, 89, 0.18);
+}
+
+/* Variante para productos "a pedido": mismo componente, borde sutil */
+.product-card--on-request {
+  border: 1px dashed var(--color-gold);
+  background-color: transparent;
+}
+
+.product-card__image {
+  aspect-ratio: 4 / 5;
+  border-radius: calc(var(--radius) - 6px);
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+  background-color: var(--color-paper);
+}
+
+.product-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover .product-card__image img {
+  transform: scale(1.07);
+}
+
+.product-card__name {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.product-card__price {
+  font-weight: 600;
+  color: var(--color-gold-dark);
+  margin-bottom: 0.5rem;
+}
+
+.product-card__price span {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--color-cacao);
+}
+
+.product-card__description {
+  color: var(--color-cacao);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-sm);
+}
+
+.product-card__link {
+  display: inline-block;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--color-gold);
+  padding-bottom: 2px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.product-card__link:hover {
+  color: var(--color-gold-dark);
+  border-color: var(--color-gold-dark);
+}
+
+.badge {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  background-color: var(--color-wine);
+  color: var(--color-cream);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+}
+
+
+/* =================================================================
+   11) CÓMO PEDIR
+   ================================================================= */
+.steps-list {
+  max-width: 640px;
+  margin: var(--space-lg) auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  text-align: left;
+}
+
+.step {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.step__number {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--color-gold);
+  flex-shrink: 0;
+  width: 2.2rem;
+}
+
+.como-pedir__nota {
+  text-align: center;
+  margin-top: var(--space-lg);
+  font-style: italic;
+  color: var(--color-cacao);
+}
+
+
+/* =================================================================
+   12) INSTAGRAM CTA
+   ================================================================= */
+.instagram-cta {
+  background-color: var(--color-carbon);
+  color: var(--color-cream);
+}
+
+.instagram-cta .section-title {
+  color: var(--color-cream);
+}
+
+.instagram-cta .section-subtitle {
+  color: var(--color-paper);
+}
+
+.instagram-cta .btn--primary {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-carbon);
+}
+
+.instagram-cta .btn--primary:hover {
+  background-color: var(--color-cream);
+  border-color: var(--color-cream);
+}
+
+
+/* =================================================================
+   13) FAQ (acordeón)
+   ================================================================= */
+.faq-list {
+  max-width: 700px;
+  margin: var(--space-lg) auto 0;
+  border-top: 1px solid rgba(36, 31, 26, 0.15);
+  text-align: left;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(36, 31, 26, 0.15);
+}
+
+.faq-item__question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  text-align: left;
+}
+
+.faq-item__icon {
+  font-size: 1.4rem;
+  color: var(--color-gold-dark);
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+}
+
+.faq-item.is-open .faq-item__icon {
+  transform: rotate(45deg);
+}
+
+/* Cerrado: altura 0. Abierto: le damos lugar de sobra para el texto. */
+.faq-item__answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.faq-item.is-open .faq-item__answer {
+  max-height: 300px;
+}
+
+.faq-item__answer p {
+  padding-bottom: var(--space-sm);
+  color: var(--color-cacao);
+}
+
+
+/* =================================================================
+   14) FOOTER
+   ================================================================= */
+.footer {
+  background-color: var(--color-paper);
+  padding: var(--space-lg) 0;
+  text-align: center;
+}
+
+.footer__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer__brand {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+}
+
+.footer__instagram {
+  color: var(--color-gold-dark);
+  border-bottom: 1px solid var(--color-gold);
+  padding-bottom: 2px;
+}
+
+.footer__location {
+  color: var(--color-cacao);
+  font-size: 0.9rem;
+}
+
+.footer__tagline {
+  color: var(--color-cacao);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.4rem;
+  max-width: 320px;
+}
+
+
+/* =================================================================
+   15) RESPONSIVE — celular y tablets
+   ================================================================= */
+@media (max-width: 900px) {
+  /* En mobile/tablet no usamos sticky: la imagen queda arriba y los
+     pasos se apilan debajo, en una sola columna */
+  .featured__experience {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .featured__visual {
+    position: static;
+    top: auto;
+  }
+
+  .featured__visual-image {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .section {
+    padding: var(--space-lg) 0;
+  }
+
+  .featured__steps {
+    gap: var(--space-lg);
+  }
+
+  .step {
+    gap: var(--space-xs);
+  }
+}
