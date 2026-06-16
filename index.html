@@ -6,6 +6,14 @@
   <title>Mon Roule — Pastelería artesanal en CABA</title>
   <meta name="description" content="Mon Roule, pastelería artesanal en CABA. Rolls de canela, budines y productos a pedido. Pedidos por Instagram.">
 
+  <!-- Favicon: usa la misma captura del logo. OJO: el favicon del navegador
+       no se puede recortar con CSS (eso solo funciona dentro de la página),
+       así que va a verse cuadrado con el fondo negro de la captura hasta
+       que se reemplace este archivo por una versión ya recortada en círculo
+       con fondo transparente. -->
+  <link rel="icon" type="image/png" href="img/logo-mon-roule.png">
+  <link rel="apple-touch-icon" href="img/logo-mon-roule.png">
+
   <!-- Si el navegador no tiene JavaScript activado, mostramos el contenido sin animar -->
   <noscript>
     <style>
@@ -29,6 +37,14 @@
        "CAMBIAR" más abajo.
        ============================================================ -->
   <header class="hero" id="hero">
+    <!-- Marca de agua decorativa: el trazado limpio del isotipo (sin
+         círculo ni fondo), gigante y casi invisible detrás del texto.
+         Es puramente decorativo (por eso alt="" y aria-hidden), el
+         nombre de la marca lo sigue diciendo el texto "Mon Roule" de
+         abajo. -->
+    <div class="hero__watermark" aria-hidden="true">
+      <img src="img/logo-mon-roule-trazado.png" alt="">
+    </div>
     <img class="hero__ornament reveal" src="img/ornaments/ornament-1.svg" alt="" aria-hidden="true">
 
     <div class="container hero__content">
@@ -270,6 +286,9 @@
        ============================================================ -->
   <footer class="footer">
     <div class="container footer__content">
+      <div class="brand-logo footer__logo">
+        <img src="img/logo-mon-roule.png" alt="Mon Roule" loading="lazy">
+      </div>
       <p class="footer__brand">Mon Roule</p>
 
       <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener"

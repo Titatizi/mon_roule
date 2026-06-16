@@ -229,6 +229,11 @@ button:focus-visible {
    ================================================================= */
 .hero {
   min-height: 100vh;
+  /* "svh" (small viewport height) descuenta las barras del navegador que
+     aparecen/desaparecen al scrollear (muy común en el navegador interno
+     de Instagram). Donde no existe, el navegador ignora la línea y se
+     queda con el 100vh de arriba. */
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -238,6 +243,44 @@ button:focus-visible {
   background: linear-gradient(180deg, var(--color-cream), var(--color-paper));
   position: relative;
   overflow: hidden;
+  /* Mantiene la marca de agua (z-index negativo, más abajo) contenida
+     acá adentro, sin que se compare con el resto de la página. */
+  isolation: isolate;
+}
+
+/* Marca de agua decorativa: ahora usa el trazado limpio del isotipo
+   (img/logo-mon-roule-trazado.png), ya sin círculo ni relleno, así que
+   no necesita recorte ni máscara — el contorno del dibujo es su propio
+   borde, orgánico. "contain" lo muestra completo y sin deformar.
+   "multiply" queda como red de seguridad: si el PNG trajera algo de
+   fondo claro en vez de transparencia real, se funde con el fondo del
+   hero igual que un fondo transparente. */
+.hero__watermark {
+  position: absolute;
+  /* 43%: centrado sobre la franja del título "Mon Roule", no sobre el
+     punto medio entre el ornamento y el botón (ese punto medio cae más
+     abajo, casi sobre el subtítulo, porque debajo del título hay más
+     contenido —subtítulo, botón— que arriba —solo el ornamento—). */
+  top: 43%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  /* "vh" en vez de "vw": lo que tiene que contener al logo es el alto
+     del bloque ornamento→botón, no el ancho de la pantalla. Así se
+     mantiene proporcionado a ese bloque en vez de crecer con el ancho
+     de ventanas anchas. */
+  width: clamp(440px, 50vh, 860px);
+  height: clamp(440px, 50vh, 860px);
+  pointer-events: none;
+}
+
+.hero__watermark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  mix-blend-mode: multiply;
+  opacity: 0.045;
 }
 
 .hero__ornament {
@@ -283,6 +326,40 @@ button:focus-visible {
 
 
 /* =================================================================
+   7.1) LOGO DE MARCA (circular)
+   El archivo img/logo-mon-roule.png es una captura cuadrada con fondo
+   negro alrededor del círculo (foto de perfil de Instagram). Esta
+   clase lo recorta a círculo: el contenedor define el tamaño +
+   border-radius:50% + overflow:hidden, y la imagen adentro usa
+   object-fit:cover para llenar ese círculo sin deformarse. Así el
+   fondo negro de la captura nunca se ve.
+   Se usa junto con ".footer__logo", que pone el tamaño según dónde
+   aparezca (en el hero el logo se usa como marca de agua, más abajo,
+   no como badge visible).
+   ================================================================= */
+.brand-logo {
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center; /* si el círculo no quedara centrado en el cuadro, ajustar este valor */
+}
+
+.footer__logo {
+  width: 56px;
+  height: 56px;
+  /* sin margin propio: ".footer__content" ya separa a sus hijos con
+     "gap", igual que el resto de los elementos del footer */
+  box-shadow: 0 0 0 1px rgba(184, 146, 89, 0.55);
+}
+
+
+/* =================================================================
    8) MARCA
    ================================================================= */
 .brand__text {
@@ -313,8 +390,11 @@ button:focus-visible {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
-  height: 600px;
+  /* min() evita que el brillo sobresalga del viewport en mobile (causaba
+     scroll horizontal): en pantallas angostas se achica al ancho de la
+     pantalla; en desktop (>600px) queda igual que antes, en 600px. */
+  width: min(600px, 100vw);
+  height: min(600px, 100vw);
   background: radial-gradient(circle, rgba(184, 146, 89, 0.12), transparent 70%);
   pointer-events: none;
 }
@@ -333,10 +413,15 @@ button:focus-visible {
 }
 
 /* Columna izquierda: se "pega" mientras se hace scroll por los pasos.
-   La altura para que esto funcione la da la columna derecha (más alta). */
+   La altura para que esto funcione la da la columna derecha (más alta).
+   "align-self: start" se repite explícito (además del align-items del
+   grid) porque algunos motores (Safari/WebKit viejos) necesitan que el
+   propio elemento sticky declare su alineación para calcular bien el
+   alto disponible para "pegarse". */
 .featured__visual {
   position: sticky;
-  top: 12vh;
+  top: 8vh;
+  align-self: start;
 }
 
 .featured__visual-image {
@@ -380,11 +465,15 @@ button:focus-visible {
   box-shadow: 0 36px 70px rgba(184, 146, 89, 0.3);
 }
 
-/* Columna derecha: pasos grandes, con mucho aire entre ellos */
+/* Columna derecha: pasos grandes, con mucho aire entre ellos.
+   El gap es más generoso que --space-xl a propósito: esta columna
+   necesita ser notablemente más alta que la imagen para que el
+   "pegado" (sticky) de la izquierda dure lo suficiente como para
+   sentirse intencional mientras se leen los 4 pasos. */
 .featured__steps {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: 9rem;
   text-align: left;
 }
 
@@ -704,8 +793,13 @@ button:focus-visible {
     top: auto;
   }
 
+  /* Sin sticky, la imagen pasa a ser la protagonista de la sección en
+     mobile: la agrandamos para que ocupe el ancho disponible y se vea
+     grande y tentadora (antes quedaba chica, con aire de sobra a los
+     costados). 480px nunca se alcanza en un celular real, así que en
+     la práctica usa todo el ancho del contenedor. */
   .featured__visual-image {
-    max-width: 320px;
+    max-width: 480px;
   }
 }
 
@@ -724,5 +818,30 @@ button:focus-visible {
 
   .step {
     gap: var(--space-xs);
+  }
+
+  /* Hero: mismo padding horizontal que el resto del sitio en mobile, un
+     poco más de presencia en el título y un ornamento algo más chico
+     para que el nombre de la marca sea el protagonista. */
+  .hero {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .hero__ornament {
+    width: 170px;
+  }
+
+  .hero__title {
+    font-size: clamp(3rem, 13vw, 4.5rem);
+  }
+
+  .hero__scroll-cue {
+    margin-top: var(--space-md);
+  }
+
+  /* El footer usa su propio padding (no es ".section"): lo alineamos
+     al mismo recorte que ya aplicamos al resto de las secciones. */
+  .footer {
+    padding: var(--space-md) 0;
   }
 }
