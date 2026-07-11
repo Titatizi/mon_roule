@@ -21,6 +21,9 @@
   --color-gold: #B89259;        /* acento, dorado apagado */
   --color-gold-dark: #8C6B3F;   /* acento en hover, dorado oscuro */
   --color-wine: #7A3B36;        /* detalle puntual (badge "a pedido") */
+  --color-act-lemon: #E0BE9C;   /* fondo del acto lemon pie: el beige tostado
+                                   muestreado del fondo de las 6 fotos, para que
+                                   la secuencia "flote" sin costuras */
 
   /* Tipografías */
   --font-display: 'Cormorant Garamond', Georgia, serif; /* títulos */
@@ -221,6 +224,13 @@ button:focus-visible {
     opacity: 1;
     transform: none;
   }
+  /* Sin scrub no tiene sentido que el acto ocupe varias pantallas de la
+     misma foto: lo colapsamos a una sola pantalla con el frame estático.
+     !important porque las reglas base y de desktop de ".act" vienen
+     después en el archivo y, a igual especificidad, ganarían por orden. */
+  .act {
+    height: 100svh !important;
+  }
 }
 
 
@@ -240,7 +250,9 @@ button:focus-visible {
   justify-content: center;
   text-align: center;
   padding: var(--space-lg) var(--space-md);
-  background: linear-gradient(180deg, var(--color-cream), var(--color-paper));
+  /* El degradé termina en el beige del acto lemon pie para que el hero
+     desemboque sin corte en la secuencia que viene justo debajo. */
+  background: linear-gradient(180deg, var(--color-cream), var(--color-act-lemon));
   position: relative;
   overflow: hidden;
   /* Mantiene la marca de agua (z-index negativo, más abajo) contenida
@@ -370,152 +382,111 @@ button:focus-visible {
 
 
 /* =================================================================
-   9) PRODUCTO DESTACADO (rolls de canela)
+   9) ACTO — LEMON PIE (movimiento continuo)
    ================================================================= */
-
-/* Un poco más de aire y un brillo dorado muy sutil detrás del título,
-   para que esta sección se sienta más protagonista que el resto.
-   IMPORTANTE: nada de "overflow" acá (hidden/auto/scroll) — rompe el
-   position:sticky de .featured__visual, que es descendiente de esta
-   sección. Por eso el brillo de abajo arranca en top:0 y no más
-   arriba: así no necesita recortarse con overflow para verse bien. */
-.featured {
+.act {
   position: relative;
-  padding: calc(var(--space-xl) + var(--space-md)) 0;
+  height: 400vh;
+  background-color: var(--color-act-lemon);
 }
 
-.featured::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  /* min() evita que el brillo sobresalga del viewport en mobile (causaba
-     scroll horizontal): en pantallas angostas se achica al ancho de la
-     pantalla; en desktop (>600px) queda igual que antes, en 600px. */
-  width: min(600px, 100vw);
-  height: min(600px, 100vw);
-  background: radial-gradient(circle, rgba(184, 146, 89, 0.12), transparent 70%);
-  pointer-events: none;
-}
-
-.featured .section-title {
-  font-size: clamp(2.4rem, 6vw, 3.4rem);
-}
-
-/* ---- Layout de dos columnas: imagen sticky + pasos ---- */
-.featured__experience {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: start; /* clave para que la columna de la imagen no se estire y pueda quedar sticky */
-  gap: var(--space-xl);
-  margin-top: var(--space-lg);
-}
-
-/* Columna izquierda: se "pega" mientras se hace scroll por los pasos.
-   La altura para que esto funcione la da la columna derecha (más alta).
-   "align-self: start" se repite explícito (además del align-items del
-   grid) porque algunos motores (Safari/WebKit viejos) necesitan que el
-   propio elemento sticky declare su alineación para calcular bien el
-   alto disponible para "pegarse". */
-.featured__visual {
+.act__sticky {
   position: sticky;
-  top: 8vh;
-  align-self: start;
-}
-
-.featured__visual-image {
-  max-width: 420px;
-  margin: 0 auto;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius);
+  top: 0;
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
-  background-color: var(--color-cream);
-  box-shadow: 0 30px 60px rgba(36, 31, 26, 0.16);
-  transition: box-shadow 0.8s ease;
+  isolation: isolate;
+  background-color: var(--color-act-lemon);
 }
 
-.featured__visual-image img {
+.act__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--color-act-lemon);
+  background-image: url("../img_master/lemon-background.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.act__product {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;
+  pointer-events: none;
+  will-change: transform;
+  transform-origin: 50% 50%;
+  transform: translate3d(170%, 8%, 0) rotate(0deg) scale(0.62);
 }
 
-/* Cada paso "activo" cambia un poco la imagen: escala y brillo van
-   creciendo a medida que avanza el proceso (masa -> ... -> glaseado).
-   Esto lo controla js/script.js cambiando data-active-step. */
-.featured__visual[data-active-step="2"] .featured__visual-image img {
-  transform: scale(1.03);
-  filter: saturate(1.08);
-}
-
-.featured__visual[data-active-step="3"] .featured__visual-image img {
-  transform: scale(1.05);
-  filter: brightness(1.05) saturate(1.12);
-}
-
-.featured__visual[data-active-step="4"] .featured__visual-image img {
-  transform: scale(1.08);
-  filter: brightness(1.08) saturate(1.16);
-}
-
-.featured__visual[data-active-step="3"] .featured__visual-image,
-.featured__visual[data-active-step="4"] .featured__visual-image {
-  box-shadow: 0 36px 70px rgba(184, 146, 89, 0.3);
-}
-
-/* Columna derecha: pasos grandes, con mucho aire entre ellos.
-   El gap es más generoso que --space-xl a propósito: esta columna
-   necesita ser notablemente más alta que la imagen para que el
-   "pegado" (sticky) de la izquierda dure lo suficiente como para
-   sentirse intencional mientras se leen los 4 pasos. */
-.featured__steps {
-  display: flex;
-  flex-direction: column;
-  gap: 9rem;
-  text-align: left;
-}
-
-/* Estado por defecto: atenuado, esperando a entrar en foco */
-.featured__step {
-  padding-left: var(--space-md);
-  border-left: 3px solid transparent;
-  opacity: 0.4;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.7s ease;
-}
-
-/* js/script.js agrega esta clase cuando el paso pasa por el centro
-   de la pantalla */
-.featured__step.is-active {
-  opacity: 1;
-  transform: translateY(0);
-  border-left-color: var(--color-gold);
-}
-
-.featured__step-number {
+.act__product img {
   display: block;
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 0.12em;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.act__copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(18vh, calc(env(safe-area-inset-bottom) + 105px));
+  z-index: 2;
+  padding: 1.5vh 8%;
+  text-align: center;
+  background: none;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  will-change: opacity, transform;
+}
+
+.act__eyebrow {
+  margin: 0 0 0.5em;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-style: italic;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--color-gold-dark);
-  margin-bottom: 0.4rem;
 }
 
-.featured__step-label {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  margin-bottom: 0.5rem;
+.act__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.06;
+  color: #D4A017;
+  text-shadow: 0 2px 18px rgba(109, 70, 5, 0.20);
 }
 
-.featured__step-text {
-  font-size: 1rem;
-  color: var(--color-cacao);
-  max-width: 420px;
+.act__cta {
+  display: inline-block;
+  padding: 0.75em 1.7em;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  color: var(--color-cream);
+  background: var(--color-carbon);
+  text-decoration: none;
+  pointer-events: auto;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .act { height: 100svh; }
+  .act__product {
+    transform: translate3d(0, -6%, 0) rotate(180deg) scale(0.806) !important;
+  }
+  .act__copy {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
 
 /* =================================================================
    10) TARJETA DE PRODUCTO (reutilizable)
@@ -780,26 +751,70 @@ button:focus-visible {
 /* =================================================================
    15) RESPONSIVE — celular y tablets
    ================================================================= */
-@media (max-width: 900px) {
-  /* En mobile/tablet no usamos sticky: la imagen queda arriba y los
-     pasos se apilan debajo, en una sola columna */
-  .featured__experience {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
+/* Desktop / tablet ancha: el acto pasa a DOS COLUMNAS. La secuencia
+   deja de ser full-bleed y vive en una "tarjeta" retrato a un lado; el
+   texto va al otro, alineado a la izquierda. Ambos sobre el mismo beige
+   del acto para que la foto flote sin bordes. */
+@media (min-width: 901px) {
+  .act {
+    height: 320vh;
   }
 
-  .featured__visual {
-    position: static;
-    top: auto;
+  .act__sticky {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-xl);
+    padding: 0 var(--space-lg);
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
-  /* Sin sticky, la imagen pasa a ser la protagonista de la sección en
-     mobile: la agrandamos para que ocupe el ancho disponible y se vea
-     grande y tentadora (antes quedaba chica, con aire de sobra a los
-     costados). 480px nunca se alcanza en un celular real, así que en
-     la práctica usa todo el ancho del contenedor. */
-  .featured__visual-image {
-    max-width: 480px;
+  .act__stage {
+    position: relative;
+    inset: auto;
+    justify-self: end;
+    width: min(46vh, 100%);
+    aspect-ratio: 941 / 1672;
+    max-height: 86vh;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(36, 31, 26, 0.22);
+    transform-origin: center center;
+  }
+
+  .act__frame {
+    object-position: center center;
+  }
+
+  /* El texto vuelve a color carbón sobre el beige (ya no va sobre foto). */
+  .act__copy {
+    position: relative;
+    inset: auto;
+    z-index: 1;
+    justify-self: start;
+    max-width: 30rem;
+    padding: 0;
+    text-align: left;
+    background: none;
+    color: var(--color-carbon);
+  }
+
+  .act__copy::before { margin: 0 0 var(--space-sm); }
+
+  .act__eyebrow { color: var(--color-gold-dark); opacity: 1; text-shadow: none; }
+  .act__title { color: var(--color-carbon); text-shadow: none; }
+  .act__text { color: var(--color-cacao); text-shadow: none; }
+
+  /* CTA con el estilo oscuro estándar del sitio (ya no sobre foto). */
+  .act__copy .btn--primary {
+    background-color: var(--color-carbon);
+    border-color: var(--color-carbon);
+    color: var(--color-cream);
+  }
+  .act__copy .btn--primary:hover {
+    background-color: var(--color-gold-dark);
+    border-color: var(--color-gold-dark);
   }
 }
 
@@ -810,10 +825,6 @@ button:focus-visible {
 
   .section {
     padding: var(--space-lg) 0;
-  }
-
-  .featured__steps {
-    gap: var(--space-lg);
   }
 
   .step {

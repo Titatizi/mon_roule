@@ -33,8 +33,14 @@
   <!-- Si el navegador no tiene JavaScript activado, mostramos el contenido sin animar -->
   <noscript>
     <style>
-      .reveal,
-      .featured__step { opacity: 1 !important; transform: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      /* Sin JS no hay secuencia: colapsamos el acto a una pantalla,
+         escondemos el escenario animado y mostramos el frame estático. */
+      .act { height: 100svh !important; }
+      .act__frames { display: none !important; }
+      /* opacity:1 es imprescindible: .act__fallback hereda opacity:0 de
+         .act__frame, así que sin esto quedaría invisible aun con display. */
+      .act__fallback { display: block !important; opacity: 1 !important; }
     </style>
   </noscript>
 
@@ -84,6 +90,28 @@
   <main>
 
     <!-- ============================================================
+         ACTO — LEMON PIE (movimiento continuo con una sola capa)
+         ============================================================ -->
+    <section class="act act--continuous" id="acto-lemon">
+      <div class="act__sticky">
+        <div class="act__background" aria-hidden="true"></div>
+
+        <div class="act__product" id="lemonProduct" aria-hidden="true">
+          <img src="img/lemon-pie-continuous/cutout-alpha.webp" alt="">
+        </div>
+
+        <div class="act__copy" id="lemonCopy" aria-live="polite">
+          <p class="act__eyebrow" id="lemonEyebrow">A pedido</p>
+          <h2 class="act__title" id="lemonTitle">Lemon pie</h2>
+          <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener"
+             class="act__cta js-instagram-link" id="lemonCta" style="display:none;">
+            Consultar por Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
          MARCA — breve presentación de la pastelería
          ============================================================ -->
     <section class="section" id="marca">
@@ -100,57 +128,6 @@
           Cada producto se hace en tandas chicas, a mano, con ingredientes simples y tiempo de sobra.
           Nada sale apurado: preferimos que cada porción se sienta cuidada, delicada y artesanal.
         </p>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         PRODUCTO DESTACADO — Rolls de canela
-         ============================================================ -->
-    <section class="section section--paper featured" id="destacado">
-      <div class="container">
-        <p class="section-eyebrow reveal reveal--grand">Nuestro clásico</p>
-        <h2 class="section-title reveal reveal--grand">Rolls de canela</h2>
-        <p class="section-subtitle reveal reveal--grand">De la masa a la mesa, paso a paso.</p>
-
-        <!-- Experiencia inmersiva: imagen grande (sticky en desktop) +
-             pasos grandes a la derecha. El atributo "data-active-step"
-             lo actualiza js/script.js para saber qué paso está activo. -->
-        <div class="featured__experience">
-
-          <div class="featured__visual" data-active-step="1">
-            <div class="featured__visual-image">
-              <img src="img/placeholders/roll-canela.svg" alt="Roll de canela recién horneado" loading="lazy">
-            </div>
-          </div>
-
-          <div class="featured__steps">
-            <!-- Cada "data-step" debe coincidir con el data-active-step de arriba -->
-            <article class="featured__step" data-step="1">
-              <span class="featured__step-number">01</span>
-              <h3 class="featured__step-label">Masa</h3>
-              <p class="featured__step-text">Amasamos a mano hasta lograr una textura suave y elástica.</p>
-            </article>
-
-            <article class="featured__step" data-step="2">
-              <span class="featured__step-number">02</span>
-              <h3 class="featured__step-label">Canela</h3>
-              <p class="featured__step-text">Cubrimos la masa con manteca y una mezcla generosa de canela.</p>
-            </article>
-
-            <article class="featured__step" data-step="3">
-              <span class="featured__step-number">03</span>
-              <h3 class="featured__step-label">Horneado</h3>
-              <p class="featured__step-text">Horneamos hasta lograr ese dorado parejo y el aroma que llena la casa.</p>
-            </article>
-
-            <article class="featured__step" data-step="4">
-              <span class="featured__step-number">04</span>
-              <h3 class="featured__step-label">Glaseado</h3>
-              <p class="featured__step-text">Terminamos con un glaseado suave, todavía tibios.</p>
-            </article>
-          </div>
-
-        </div>
       </div>
     </section>
 
@@ -320,5 +297,6 @@
   </footer>
 
   <script src="js/script.js"></script>
+  <script type="module" src="js/lemon-scroll.js"></script>
 </body>
 </html>
