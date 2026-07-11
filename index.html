@@ -30,17 +30,11 @@
   <link rel="icon" type="image/png" href="img/logo-mon-roule.png">
   <link rel="apple-touch-icon" href="img/logo-mon-roule.png">
 
-  <!-- Si el navegador no tiene JavaScript activado, mostramos el contenido sin animar -->
+  <!-- Si el navegador no tiene JavaScript activado, mostramos el contenido
+       sin animar (ver .reveal y #product-stories-noscript más abajo). -->
   <noscript>
     <style>
       .reveal { opacity: 1 !important; transform: none !important; }
-      /* Sin JS no hay secuencia: colapsamos el acto a una pantalla,
-         escondemos el escenario animado y mostramos el frame estático. */
-      .act { height: 100svh !important; }
-      .act__frames { display: none !important; }
-      /* opacity:1 es imprescindible: .act__fallback hereda opacity:0 de
-         .act__frame, así que sin esto quedaría invisible aun con display. */
-      .act__fallback { display: block !important; opacity: 1 !important; }
     </style>
   </noscript>
 
@@ -50,6 +44,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/product-story.css">
 </head>
 <body>
 
@@ -90,26 +85,28 @@
   <main>
 
     <!-- ============================================================
-         ACTO — LEMON PIE (movimiento continuo con una sola capa)
+         PRODUCT STORIES — motor genérico scroll-driven
+         El contenido lo genera js/product-story-engine.js a partir de
+         data/product-stories.js (agregar un producto = agregar un
+         objeto a ese array, no tocar este HTML).
          ============================================================ -->
-    <section class="act act--continuous" id="acto-lemon">
-      <div class="act__sticky">
-        <div class="act__background" aria-hidden="true"></div>
+    <div id="product-stories"></div>
 
-        <div class="act__product" id="lemonProduct" aria-hidden="true">
-          <img src="img/lemon-pie-continuous/cutout-alpha.webp" alt="">
+    <!-- Sin JS: fallback estático real (no solo texto). Mismo producto,
+         mismo copy final, mismo CTA funcional — sin animación. -->
+    <noscript>
+      <section class="story story--layered" style="height:100svh;background-color:#E0BE9C;">
+        <div class="story__sticky">
+          <div class="story__layer story__layer--bg" style="background-image:url('img_master/lemon-background.webp');background-size:cover;background-position:center;"></div>
+          <div class="story__noscript-fallback">
+            <img src="img/lemon-pie-continuous/cutout-alpha.webp" alt="Lemon pie">
+            <p class="story__eyebrow" style="color:#D4A017;">A pedido</p>
+            <h2 class="story__title" style="color:#D4A017;">Lemon pie</h2>
+            <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener" class="story__cta">Consultar por Instagram</a>
+          </div>
         </div>
-
-        <div class="act__copy" id="lemonCopy" aria-live="polite">
-          <p class="act__eyebrow" id="lemonEyebrow">A pedido</p>
-          <h2 class="act__title" id="lemonTitle">Lemon pie</h2>
-          <a href="https://www.instagram.com/mon_roule/" target="_blank" rel="noopener"
-             class="act__cta js-instagram-link" id="lemonCta" style="display:none;">
-            Consultar por Instagram
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
+    </noscript>
 
     <!-- ============================================================
          MARCA — breve presentación de la pastelería
@@ -297,6 +294,6 @@
   </footer>
 
   <script src="js/script.js"></script>
-  <script type="module" src="js/lemon-scroll.js"></script>
+  <script type="module" src="js/product-story-engine.js"></script>
 </body>
 </html>
