@@ -1,0 +1,11 @@
+
+# Local prototypes and backups
+.claude/
+scripts/
+backup-before-lemon-*/
+lemon*.zip
+img-secuence/
+img/lemon-pie-seq/
+img/lemon-pie-seq-v2/
+img/lemon-pie-continuous/preview.html*
+img_master/lemon-pie-cutout.png
