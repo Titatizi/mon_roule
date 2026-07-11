@@ -178,6 +178,13 @@ button:focus-visible {
   box-shadow: 0 14px 28px rgba(36, 31, 26, 0.18);
 }
 
+/* Feedback táctil inmediato (sin esperar los 0.4s pensados para hover
+   de mouse). Solo transform: no genera layout shift. */
+.btn--primary:active {
+  transform: scale(0.97);
+  transition-duration: 0.12s;
+}
+
 
 /* =================================================================
    6) ANIMACIÓN DE APARICIÓN AL HACER SCROLL ("reveal")
@@ -224,13 +231,8 @@ button:focus-visible {
     opacity: 1;
     transform: none;
   }
-  /* Sin scrub no tiene sentido que el acto ocupe varias pantallas de la
-     misma foto: lo colapsamos a una sola pantalla con el frame estático.
-     !important porque las reglas base y de desktop de ".act" vienen
-     después en el archivo y, a igual especificidad, ganarían por orden. */
-  .act {
-    height: 100svh !important;
-  }
+  /* El colapso a 100svh de las product stories vive en
+     css/product-story.css (@media prefers-reduced-motion sobre .story). */
 }
 
 
@@ -382,111 +384,9 @@ button:focus-visible {
 
 
 /* =================================================================
-   9) ACTO — LEMON PIE (movimiento continuo)
+   9) [migrado a css/product-story.css — motor genérico de "product
+   stories". Ver data/product-stories.js + js/product-story-engine.js.]
    ================================================================= */
-.act {
-  position: relative;
-  height: 400vh;
-  background-color: var(--color-act-lemon);
-}
-
-.act__sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100svh;
-  overflow: hidden;
-  isolation: isolate;
-  background-color: var(--color-act-lemon);
-}
-
-.act__background {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-color: var(--color-act-lemon);
-  background-image: url("../img_master/lemon-background.webp");
-  background-size: cover;
-  background-position: center;
-}
-
-.act__product {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  will-change: transform;
-  transform-origin: 50% 50%;
-  transform: translate3d(170%, 8%, 0) rotate(0deg) scale(0.62);
-}
-
-.act__product img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.act__copy {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: max(18vh, calc(env(safe-area-inset-bottom) + 105px));
-  z-index: 2;
-  padding: 1.5vh 8%;
-  text-align: center;
-  background: none;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(8px);
-  will-change: opacity, transform;
-}
-
-.act__eyebrow {
-  margin: 0 0 0.5em;
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-style: italic;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-gold-dark);
-}
-
-.act__title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 2.8rem);
-  font-weight: 600;
-  line-height: 1.06;
-  color: #D4A017;
-  text-shadow: 0 2px 18px rgba(109, 70, 5, 0.20);
-}
-
-.act__cta {
-  display: inline-block;
-  padding: 0.75em 1.7em;
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  letter-spacing: 0.03em;
-  color: var(--color-cream);
-  background: var(--color-carbon);
-  text-decoration: none;
-  pointer-events: auto;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .act { height: 100svh; }
-  .act__product {
-    transform: translate3d(0, -6%, 0) rotate(180deg) scale(0.806) !important;
-  }
-  .act__copy {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
 
 /* =================================================================
    10) TARJETA DE PRODUCTO (reutilizable)
@@ -564,6 +464,7 @@ button:focus-visible {
 }
 
 .product-card__link {
+  position: relative;
   display: inline-block;
   font-size: 0.85rem;
   letter-spacing: 0.03em;
@@ -572,7 +473,21 @@ button:focus-visible {
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Área táctil ampliada a ~44px sin tocar el estilo visible: el link
+   sigue siendo solo texto+subrayado, el toque se registra en un área
+   invisible más grande alrededor. */
+.product-card__link::before {
+  content: "";
+  position: absolute;
+  inset: -12px -10px;
+}
+
 .product-card__link:hover {
+  color: var(--color-gold-dark);
+  border-color: var(--color-gold-dark);
+}
+
+.product-card__link:active {
   color: var(--color-gold-dark);
   border-color: var(--color-gold-dark);
 }
@@ -677,6 +592,11 @@ button:focus-visible {
   font-family: var(--font-display);
   font-size: 1.15rem;
   text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.faq-item__question:active {
+  background-color: rgba(184, 146, 89, 0.1);
 }
 
 .faq-item__icon {
@@ -734,6 +654,10 @@ button:focus-visible {
   padding-bottom: 2px;
 }
 
+.footer__instagram:active {
+  opacity: 0.7;
+}
+
 .footer__location {
   color: var(--color-cacao);
   font-size: 0.9rem;
@@ -751,72 +675,8 @@ button:focus-visible {
 /* =================================================================
    15) RESPONSIVE — celular y tablets
    ================================================================= */
-/* Desktop / tablet ancha: el acto pasa a DOS COLUMNAS. La secuencia
-   deja de ser full-bleed y vive en una "tarjeta" retrato a un lado; el
-   texto va al otro, alineado a la izquierda. Ambos sobre el mismo beige
-   del acto para que la foto flote sin bordes. */
-@media (min-width: 901px) {
-  .act {
-    height: 320vh;
-  }
-
-  .act__sticky {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: var(--space-xl);
-    padding: 0 var(--space-lg);
-    max-width: 1280px;
-    margin: 0 auto;
-  }
-
-  .act__stage {
-    position: relative;
-    inset: auto;
-    justify-self: end;
-    width: min(46vh, 100%);
-    aspect-ratio: 941 / 1672;
-    max-height: 86vh;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: 0 40px 80px rgba(36, 31, 26, 0.22);
-    transform-origin: center center;
-  }
-
-  .act__frame {
-    object-position: center center;
-  }
-
-  /* El texto vuelve a color carbón sobre el beige (ya no va sobre foto). */
-  .act__copy {
-    position: relative;
-    inset: auto;
-    z-index: 1;
-    justify-self: start;
-    max-width: 30rem;
-    padding: 0;
-    text-align: left;
-    background: none;
-    color: var(--color-carbon);
-  }
-
-  .act__copy::before { margin: 0 0 var(--space-sm); }
-
-  .act__eyebrow { color: var(--color-gold-dark); opacity: 1; text-shadow: none; }
-  .act__title { color: var(--color-carbon); text-shadow: none; }
-  .act__text { color: var(--color-cacao); text-shadow: none; }
-
-  /* CTA con el estilo oscuro estándar del sitio (ya no sobre foto). */
-  .act__copy .btn--primary {
-    background-color: var(--color-carbon);
-    border-color: var(--color-carbon);
-    color: var(--color-cream);
-  }
-  .act__copy .btn--primary:hover {
-    background-color: var(--color-gold-dark);
-    border-color: var(--color-gold-dark);
-  }
-}
+/* El breakpoint de dos columnas para las product stories vive en
+   css/product-story.css (@media min-width:901px sobre .story__*). */
 
 @media (max-width: 600px) {
   .container {
@@ -856,3 +716,7 @@ button:focus-visible {
     padding: var(--space-md) 0;
   }
 }
+
+/* Los dos parches "MON ROULE NARROW/LOWER ACT COPY" que vivían acá se
+   migraron como reglas normales (sin !important) a .story__copy en
+   css/product-story.css — ya no hace falta parchear por encima. */
